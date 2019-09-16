@@ -1,0 +1,182 @@
+package Multi_Threading_ass;
+/* 1) create a multi-threaded application by using  "extends Thread " method.create 2 threads. they should display characters 
+ * from A to J. */
+public class Multi1 extends Thread
+{
+   public void run()
+   {
+	   char ch;
+	   for(ch='A';ch<='J';ch++)
+	   {
+		   System.out.println(ch);
+	   }
+   }
+	public static void main(String[] args)
+	{
+		Multi1 m = new Multi1();
+		Thread t = new Thread(m);
+		Thread t1 = new Thread(m);
+		t.start();
+		t1.start();
+	}
+
+}
+
+
+
+
+package Multi_Threading_ass;
+/* 2) create a multi-threaded application by using  "extends Thread " method.create 2 threads. they should display
+ *  characters from A to J. above program  using "implements Runnable" method.*/
+public class Multi2 implements Runnable
+{
+	public void run()
+	{
+		char ch;
+		   for(ch='A';ch<='J';ch++)
+		   {
+			   System.out.println(ch);
+		   }
+	}
+	public static void main(String[] args) 
+	{
+		Multi2 m = new Multi2();
+		Thread t = new Thread(m);
+		Thread t1 = new Thread(m);
+		t.start();
+		t1.start();
+	}
+}
+
+
+
+package Multi_Threading_ass;
+/* 3) create 3 threads in such a way that while one thread is executing, 2 threads cannot interfere. 
+ * they should display output "Exec  0" to "Exec 5". */
+
+public class Multi3 extends Thread
+{
+	public synchronized void run()
+	{
+		for(int i=0;i<=5;i++)
+		{
+			System.out.println("Exce " +i+Thread.currentThread());
+		}
+		try
+		{
+			Thread.sleep(200);
+		}
+		catch(InterruptedException ie)
+		{
+			System.out.println(ie);
+		}
+	}
+	public static void main(String[] args) 
+	{
+		Multi3 m = new Multi3();
+		Thread t = new Thread(m,"first");
+		Thread t1 = new Thread(m,"second");
+		Thread t2 = new Thread(m,"third");
+		t.start();
+		t1.start();
+		t2.start();
+		
+	}
+
+}
+
+
+
+package Multi_Threading_ass;
+/* 4)create 2 threads. Write a program which displays number 1 to 10 using class lock. 
+[hint:- use "implements Runnable" and synchronized block]
+ */
+public class Multi4 implements Runnable 
+{
+	static Class cs;
+	static void Disp()
+	{
+		synchronized(cs)
+		{
+			for(int i=1;i<=10;i++)
+			{
+				System.out.println(i);
+			}
+		
+		try
+		{
+			cs.wait();
+		}
+		catch(InterruptedException ie)
+		{
+			System.out.println(ie);
+			cs.notifyAll();
+		}
+	}
+	}
+	@Override
+	public void run() 
+	 {
+		Disp();
+     }
+	public static void main(String[] args) throws ClassNotFoundException 
+	{
+		cs=Class.forName("Multi_Threading_ass.Multi4");
+		Multi4 m = new Multi4();
+		Multi4 m1 = new Multi4();
+		Thread t = new Thread(m);
+		Thread t1 = new Thread(m1);
+		t.start();
+		t1.start();
+		
+	}
+}
+
+
+
+package Multi_Threading_ass;
+/* 5) create 2 threads one thread will display 1 to 50
+	  second thread will display 50 to 1 both the threads should start simultaneously.
+      (use implements method) */
+public class Multi5 implements Runnable
+{
+	public void Disp()
+	{
+	 for(int i =1;i<=50;i++)
+	 {
+		 System.out.println(i);
+	 }
+	}
+	public void Disp1()
+		{
+	      for(int j=50;j>=0;j--)
+	        {
+		      System.out.println(j);
+	        }
+		}
+	 public void run()
+	 {
+		 try
+		 {
+			 Thread.sleep(200);	
+		 Disp();
+		 Disp1();
+		 }
+		 catch(InterruptedException ie)
+		 {
+			 System.out.println(ie);
+		 }
+	 }
+
+	public static void main(String[] args) 
+	{
+		Multi5 m = new Multi5();
+		Multi5 m1 = new Multi5();
+		Thread t = new Thread(m);
+		Thread t1 = new Thread(m1);
+		t.start();
+		t1.start();
+
+	}
+
+}
